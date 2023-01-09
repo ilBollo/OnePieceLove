@@ -1,13 +1,7 @@
 <?php
 require_once("bootstrap.php");
 
-$templateParams["titolo"] = "One Piece - Home";
-$templateParams["nome"] = "lista-articoli.php";
-$templateParams["articolicasuali"] = $dbh->getRandomPosts(2);
-$templateParams["categorie"] = $dbh->getCategories();
-
-$templateParams["articoli"] = $dbh->getPosts(2);
-
+$templateParams["titolo"] = "Naruto Social World";
 
 require("template/base.php");
 ?>
