@@ -14,17 +14,16 @@
             <li><a href="index.php">Home</a></li><li><a href="Amici.html">Amici</a></li><li><a href="login.html">Login</a></li>
         </ul>
     </nav>
-    <main>
-    <?php
-        require($templateParams["nome"]);
-    ?>
+   <main>
+
     </main><aside>
         <section>
 
         </section>
     </aside>
     <footer>
-        <p>Io credo in me</p>
+        <p>-La differenza tra la stupidità e il genio è che il genio ha i suoi limiti: Neji Hyuuga.
+        </p>
     </footer>
 </body>
 </html>
