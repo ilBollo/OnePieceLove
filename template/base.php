@@ -7,18 +7,20 @@
 </head>
 <body>
     <header>
-        <h1>Il mondo di One Piece</h1>
+        <h1>Il mondo di Naruto</h1>
     </header>
-    <nav>
-        <ul>
-            <li><a href="index.php">Home</a></li><li><a href="Amici.html">Amici</a></li><li><a href="login.html">Login</a></li>
-        </ul>
-    </nav>
+
    <main>
+   <div class="container">
+        <div class="tab">
+            <button class="tablink active" onclick="openTab(event,'signin')" id="link1">Login</button>
+            <button class="tablink" onclick="openTab(event,'signup')" id="link2">Sign Up</button>
+        </div>        
+    </div>
 
     </main><aside>
         <section>
-
+        <img src="upload/accessibility.jpg"/>
         </section>
     </aside>
     <footer>
