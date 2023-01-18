@@ -1,49 +1,41 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap CSS -->
-           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-
-    <?php
-    if (isset($templateParams["js"])) :
-        foreach ($templateParams["js"] as $script) :
-            ?>
-            <script src="<?php echo $script; ?>"></script>
-            <?php
-        endforeach;
-    endif;
-    ?>
-    <title>Naruto Social World</title>
-    
-
+    <title>Naruto World</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
 </head>
-<body class="text-center">
-    <div class="container-fluid">
-    <div class="col-12">
-            <header class="col-12">
-        <h1 >Il mondo di Naruto</h1>
+<body>
+    <header>
+        <h1>Naruto Social</h1>
     </header>
-
-   <main>
-   <?php
+    <nav>
+        <ul>
+            
+        </ul>
+    </nav>
+    <main>
+    <?php
     if(isset($templateParams["nome"])){
         require($templateParams["nome"]);
     }
     ?>
-
-    </main>
+    </main><aside>
         <section>
-            <img src="upload/accessibility.jpg"/>
         </section>
-        <footer>
-        <p>-La differenza tra la stupidità e il genio è che il genio ha i suoi limiti: Neji Hyuuga.
-        </p>
+    </aside>
+    <footer>
+        <p>Tecnologie Web - A.A. 2022/2023</p>
     </footer>
-</div>
-    </div>
+    <?php
+    if(isset($templateParams["js"])):
+        foreach($templateParams["js"] as $script):
+    ?>
+        <script src="<?php echo $script; ?>"></script>
+    <?php
+        endforeach;
+    endif;
+    ?>
+
 </body>
 </html>
