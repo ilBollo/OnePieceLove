@@ -13,6 +13,8 @@ function generaLoginForm(loginerror = null) {
             <li>
                 <input type="submit" name="submit" value="Invia" />
             </li>
+            <li>
+                <a href="index.php?action=registrazione-utente">Registrati</a>
         </ul>
     </form>`;
     return form;
