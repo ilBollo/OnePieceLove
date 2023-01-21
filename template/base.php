@@ -2,86 +2,27 @@
 <html lang="it">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Naruto World</title>
+    <title><?php echo $templateParams["title"]; ?></title>
+    <link rel="icon" href="<?php echo UPLOAD_DIR.'logo.png'?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"/>
-    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <header>
-        <h1>Naruto Social</h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
->        <div class="container-fluid">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarExample01"
-        aria-controls="navbarExample01"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarExample01">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item active">
-            <a class="nav-link" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- Navbar -->
+    <?php
+    echo '<header>
+    <img id="profile-name" src="'.UPLOAD_DIR.'logo.png" alt=""></img>
 
-  <!-- Background image -->
-  <div
-    class="p-5 text-center bg-image"
-    style="
-      background-image: /upload/accessibility.jpg;
-      height: 400px;
-      margin-top: 58px;
-    "
-  >
-    <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="text-white">
-          <h1 class="mb-3">Heading</h1>
-          <h4 class="mb-3">Subheading</h4>
-          <a class="btn btn-outline-light btn-lg" href="#!" role="button"
-          >Call to action</a
-          >
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Background image -->
-</header>
-
-            
-        </div>
-    </nav>
+      <h1>One Piece Love</h1>
+    </header>';
+    ?>
     <main>
     <?php
     if(isset($templateParams["nome"])){
         require($templateParams["nome"]);
     }
     ?>
-    </main><aside>
-        <section>
-        </section>
-    </aside>
-    <footer>
-        <p>Tecnologie Web - A.A. 2022/2023</p>
-    </footer>
+    </main>
+    
     <?php
     if(isset($templateParams["js"])):
         foreach($templateParams["js"] as $script):

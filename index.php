@@ -1,16 +1,11 @@
 <?php
-require_once("connection.php");
+require_once("bootstrap.php");
 
 if (!isUserLoggedIn()) {
+    $templateParams["titolo"] = "OnePieceLove   - Login";
     $templateParams["js"] = array("https://unpkg.com/axios/dist/axios.min.js","js/login.js");
-    require("template/base.php");
+    require("template/login.php");
 } else {
     header('Location: homepage.php');
 }
-/* ($_GET["action"]) {
-    case 'registrazione-utente':
-        $templateParams["js"] = array("https://unpkg.com/axios/dist/axios.min.js","js/form-registrazione.js");
-    break;
-*/
-
 ?>

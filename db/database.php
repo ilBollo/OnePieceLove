@@ -1,5 +1,4 @@
 <?php
-
 class DatabaseHelper{
     private $db;
 
@@ -10,15 +9,14 @@ class DatabaseHelper{
         }
     }
 
-    public function checkUserLogin($email){
-        $query = "SELECT Email, Password FROM account_utenti WHERE Email = ?";
+    public function checkLogin($email, $password){
+        $query = "SELECT iduser, nickname FROM account WHERE email = ? AND password = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('s', $email);
+        $stmt->bind_param('ss',$email, $password);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
+    }      
 }
 
 ?>

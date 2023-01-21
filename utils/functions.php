@@ -10,17 +10,14 @@ function getIdFromName($name){
 }
 
 function isUserLoggedIn(){
-    return !empty($_SESSION['idautore']);
+    return !empty($_SESSION['idUser']);
 }
 
 function registerLoggedUser($user){
-    $_SESSION["idautore"] = $user["idautore"];
-    $_SESSION["username"] = $user["username"];
-    $_SESSION["nome"] = $user["nome"];
-}
 
-function getEmptyArticle(){
-    return array("idarticolo" => "", "titoloarticolo" => "", "imgarticolo" => "", "testoarticolo" => "", "anteprimaarticolo" => "", "categorie" => array());
+    $_SESSION["nikName"] = $user["nikName"];
+    $_SESSION["idUser"] = $user["idUser"];
+    
 }
 
 function getAction($action){

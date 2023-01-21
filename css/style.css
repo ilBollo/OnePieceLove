@@ -1,3 +1,15 @@
-body {
-    background-color: orange;
+body,html {
+    background-image: url('https://wallpapercave.com/wp/wp8300034.jpg');
+    height: 100%;
+}
+
+#profile-img {
+    height:180px;
+}
+.h-80 {
+    height: 80% !important;
+}
+
+h1 {
+    color:red;
 }
