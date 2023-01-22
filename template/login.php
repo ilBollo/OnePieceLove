@@ -8,9 +8,9 @@
         <link rel="stylesheet" href="css/style.css" />
     </head>
     <body>
-    <div class="container h-80">
-    <div class="row align-items-center h-100">
-        <div class="col-3 mx-auto">
+    <div class="container">
+    <div class="row align-items-center ">
+        <div class="col-6 mx-auto">
             <div class="text-center">
                 <?php
                 echo '
@@ -19,6 +19,9 @@
                 ?>
                 <h1>One Piece Love</h1>
             </div>
+            <div class="p-3 mb-2 bg-warning text-dark">
+                <div class="login-wrap p-2 p-md-4">
+
     <main>
     <?php
     if(isset($templateParams["nome"])){
@@ -26,6 +29,7 @@
     }
     ?>
     </main>
+            </div>
         </div>
     </div>
     </div>

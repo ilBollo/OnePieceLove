@@ -9,14 +9,24 @@ class DatabaseHelper{
         }
     }
 
-    public function checkLogin($email, $password){
+    public function checkLogin(string $email, string $password)
+    {
         $query = "SELECT iduser, nickname FROM account WHERE email = ? AND password = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ss',$email, $password);
+        $stmt->bind_param('ss', $email, $password);
         $stmt->execute();
         $result = $stmt->get_result();
+            return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getPersonaggi(){
+        $stmt = $this->db->prepare("SELECT * FROM personaggi");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
         return $result->fetch_all(MYSQLI_ASSOC);
-    }      
+    }
+   
 }
 
 ?>

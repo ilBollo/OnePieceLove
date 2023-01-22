@@ -10,13 +10,13 @@ function getIdFromName($name){
 }
 
 function isUserLoggedIn(){
-    return !empty($_SESSION['idUser']);
+    return !empty($_SESSION['iduser']);
 }
 
 function registerLoggedUser($user){
 
-    $_SESSION["nikName"] = $user["nikName"];
-    $_SESSION["idUser"] = $user["idUser"];
+    $_SESSION["nickname"] = $user["nickname"];
+    $_SESSION["iduser"] = $user["iduser"];
     
 }
 

@@ -10,6 +10,6 @@ body,html {
     height: 80% !important;
 }
 
-h1 {
+h1,a {
     color:red;
 }
