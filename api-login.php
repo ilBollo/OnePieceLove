@@ -24,7 +24,7 @@ header('Content-Type: application/json');
 echo json_encode($result);
 
         /**
-         * setta i cookie se ricordi è ceccato
+         * setta i cookie se ricordami è ceccato
          */
         function ricordami(bool $ricordami, string $email, string $password)
         {

@@ -20,6 +20,10 @@ function registerLoggedUser($user){
     
 }
 
+function getEmptyPost(){
+    return array("idpost" => "", "titolopost" => "", "immaginePost" => "", "testopost" => "", "anteprimapost" => "");
+}
+
 function getAction($action){
     $result = "";
     switch($action){
