@@ -1,27 +1,12 @@
 <?php
-function isActive($pagename){
-    if(basename($_SERVER['PHP_SELF'])==$pagename){
-        echo " class='active' ";
-    }
-}
-
-function getIdFromName($name){
-    return preg_replace("/[^a-z]/", '', strtolower($name));
-}
 
 function isUserLoggedIn(){
     return !empty($_SESSION['iduser']);
 }
 
-function registerLoggedUser($user){
-
+function registraLogginUser($user){
     $_SESSION["nickname"] = $user["nickname"];
     $_SESSION["iduser"] = $user["iduser"];
-    
-}
-
-function getEmptyPost(){
-    return array("idpost" => "", "titolopost" => "", "immaginePost" => "", "testopost" => "", "anteprimapost" => "");
 }
 
 function getAction($action){
@@ -44,8 +29,7 @@ function getAction($action){
 
 function uploadImage($path, $image){
     $imageName = basename($image["name"]);
-    $fullPath = $path.$imageName;
-    
+    $fullPath = $path.$imageName;    
     $maxKB = 500;
     $acceptedExtensions = array("jpg", "jpeg", "png", "gif");
     $result = 0;

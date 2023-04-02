@@ -44,26 +44,42 @@ class DatabaseHelper{
         return $stmt->execute();
     }
 
-    public function getPosts($n=-1){
-        $query = "SELECT idpost, titolo, immaginepost, datapost, testo, nickname FROM post, account WHERE post.iduser=account.iduser ORDER BY datapost DESC";
-        if($n > 0){
-            $query .= " LIMIT ?";
-        }
+    //trova i post degli amici, i propri e di quelli che amano lo stesso personaggio
+    public function getPosts(int $iduser){
+        $query = "SELECT idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio, anteprimapost
+        FROM post inner join account on post.iduser=account.iduser left join amicizia a on a.idUser =post.idUser
+        where post.idUser = ? or a.idAmico=? or account.IdPersonaggio = (SELECT IdPersonaggio from account where account.idUser = ?)
+        ORDER BY datapost DESC";
+        //if($n > 0){
+        //    $query .= " LIMIT ?";
+        //}
         $stmt = $this->db->prepare($query);
-        if($n > 0){
-            $stmt->bind_param('i',$n);
-        }
+        //if($n > 0){
+            $stmt->bind_param('iii',$iduser,$iduser,$iduser);
+        //}
         $stmt->execute();
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function insertPost($titolopost, $testopost, $anteprimapost, $datapost, $imgpost, $iduser){
-    
-        $query = "INSERT INTO post (titolo, testo, anteprimapost, datapost, immaginepost, iduser) VALUES (?, ?, ?, ?, ?, ?)";
+
+    public function getPostsProfilo(int $iduser){
+        $query = "SELECT idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio, anteprimapost FROM post, account WHERE post.iduser=account.iduser and post.iduser =? ORDER BY datapost DESC";
+   
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('sssssi',$titolopost, $testopost, $anteprimapost, $datapost, $imgpost, $iduser);
+        $stmt->bind_param('i',$iduser);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function insertPost($titolopost, $testopost, $datapost, $imgpost, $iduser){
+    
+        $query = "INSERT INTO post (titolo, testo, datapost, immaginepost, iduser) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ssssi',$titolopost, $testopost, $datapost, $imgpost, $iduser);
         $stmt->execute();
         
         return $stmt->insert_id;
@@ -88,14 +104,6 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    function updateLike(int $likeValue, int $idpost, string $iduser){
-        $query = "UPDATE mipiace SET mipiace = ? WHERE idpost = ? AND iduser = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iii', $likeValue, $idpost, $iduser);
-        $result = $stmt->execute();
-        return $result;
-    }
-
     function insertLike(int $idpost, string $iduser, int $likeValue){
         $query = "INSERT INTO mipiace (idpost, iduser, mipiace) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($query);
@@ -112,6 +120,33 @@ class DatabaseHelper{
         return $result;
     }
 
+    function getCommenti(int $idpost){
+        $query = "select * from commento c inner join account a on c.idUser=a.idUser where idPost=? order by dataCommento DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idpost);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    
+    function aggiungiCommento(int $idpost, string $iduser, string $commento){
+        $query = "INSERT INTO commento (idpost, iduser, contenuto, dataCommento) VALUES (?, ?, ?, NOW())";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('iis', $idpost, $iduser, $commento);
+        $result = $stmt->execute();
+        return $result;
+    }
+
+    public function deletePostComment(int $commentID){
+        $query = "DELETE FROM commento WHERE idCommento = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i',$commentID);
+        $result=$stmt->execute();
+        return $result;
+    }
+
     public function getUserProfilo(string $iduser){
         $query = "SELECT account.nome, cognome, nickname, account.idpersonaggio, email, p.nome as personaggio_preferito FROM account inner join personaggi p on p.idPersonaggio = account.IdPersonaggio WHERE iduser = ?";
         $stmt = $this->db->prepare($query);
@@ -122,13 +157,22 @@ class DatabaseHelper{
         return $result->fetch_assoc();
     }
 
-    public function getUserAmici($iduser){
+    public function getUserAmici(int $iduser){
         $query = "SELECT ac.nickname, idpersonaggio FROM amicizia inner JOIN account ac ON amicizia.idamico = ac.iduser WHERE amicizia.iduser = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $iduser);
         $stmt->execute();
         $result = $stmt->get_result();
 
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function trovaUtenti(string $nome_utente){
+        $query = "SELECT a.nome, a.cognome, linkImmagine FROM account a inner join personaggi p on a.IdPersonaggio = p.idPersonaggio WHERE a.nome LIKE CONCAT('%', ?, '%')";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $nome_utente);
+        $stmt->execute();
+        $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 

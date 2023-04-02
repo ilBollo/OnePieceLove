@@ -7,7 +7,7 @@ function generaLoginForm(loginerror = null) {
                         <input type="text" name="email" id="email" class="form-control" placeholder="email"  required autofocus>
                     </div>
                     <div class="form-outline mb-4">
-                    <input type="password" name="password" id="password" class="form-control" placeholder="password" required autofocus>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="password" required>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="form-control btn btn-danger rouded submit px-3" name="submit">
@@ -21,9 +21,6 @@ function generaLoginForm(loginerror = null) {
                                 <input type="checkbox" id="ricordami" name="ricordami" role="switch">
                                 <span class="checkmark"></span>
                             </label>
-                        </div>
-                        <div class="w-50 text-md-right">
-                            <a href="#">Password dimenticata?</a>
                         </div>
                     </div>       
             </form>

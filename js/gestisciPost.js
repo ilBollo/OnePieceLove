@@ -1,4 +1,4 @@
-function generaGestisciPostForm(loginerror = null) {
+/*function generaGestisciPostForm(loginerror = null) {
     let form = `
     <form action="#" method="POST" id="inserisci_post">
         <h2>Gestisci post</h2>
@@ -27,13 +27,12 @@ function generaGestisciPostForm(loginerror = null) {
     `;
     return form;
 }
-
+*/
 
 function inserisciPost(){
 let formData = new FormData();
 
     formData.append('titolo', document.getElementById('titolopost').value);
-    formData.append('anteprimapost', document.getElementById('anteprimapost').value);
     formData.append('testo', document.getElementById('testopost').value);
     formData.append('immaginePost', document.getElementById('imgpost').files[0]);
 
@@ -47,7 +46,7 @@ let formData = new FormData();
     });
 }
 
-const main = document.querySelector("main");
-let form = generaGestisciPostForm();
-main.innerHTML = form;
+//const main = document.querySelector("main");
+//let form = generaGestisciPostForm();
+//main.innerHTML = form;
 

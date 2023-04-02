@@ -2,7 +2,8 @@
 require_once 'bootstrap.php';
 
 if (isUserLoggedIn()) {
-    $posts = $dbh->getPosts($_SESSION['iduser']);
+    $result["iduser"] = $_SESSION["iduser"];    
+    $posts = $dbh->getPostsProfilo( $result["iduser"]);
     for ($i = 0; $i < count($posts); $i++) {
         $posts[$i]["immaginepost"] = UPLOAD_DIR . $posts[$i]["immaginepost"];
       $posts[$i]["myReaction"] = $dbh->checkReaction($posts[$i]["idpost"], $_SESSION["iduser"]);

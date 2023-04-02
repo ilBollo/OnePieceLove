@@ -10,8 +10,7 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
         $result["errorelogin"] = "Email e/o password errati";
     }
     else{
-        registerLoggedUser($login_result[0]);
- 
+        registraLogginUser($login_result[0]); 
     }
 }
 
@@ -31,9 +30,9 @@ echo json_encode($result);
             if ($ricordami) {
                 setcookie("email", $email, time() + 3600);
                 setcookie("password", $password, time() + 3600);
-            } else {//non funziona
-                setcookie("email", "");
-                setcookie("password", "");
+            } else {
+                setcookie("email", time() - 3600);
+                setcookie("password", time() - 3600);
             }
         }
 

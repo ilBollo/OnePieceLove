@@ -18,7 +18,7 @@ function generaIscrizioneForm(){
             <input type ="text" id="cognome" name="cognome" class="form-control" placeholder="Cognome" required></input>
         </div>    
         <div class="form-outline mb-4">        
-            <label for="Data di nascita" class="form-label">Data di nascita</label>
+            <label for="data_nascita" class="form-label">Data di nascita</label>
             <input type="date" id="data_nascita" name="data_nascita" class="form-control" required></input>
         </div>    
         <div class="form-outline mb-4">        
@@ -33,7 +33,7 @@ function generaIscrizioneForm(){
         <div class="form-outline mb-4">        
             <input type ="password" id="conferma_password" name="conferma_password" class="form-control" placeholder="Conferma Password" oninput="checkConfirmPassword()" required></input>
         </div>
-        <label for="personaggio_preferito">
+        <label for="personaggi_lista">
             Seleziona il tuo personaggio preferito di One Piece:
             <select id="personaggi_lista" title="Lista personaggi">
             </select>

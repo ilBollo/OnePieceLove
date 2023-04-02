@@ -8,39 +8,33 @@
         <link rel="stylesheet" href="css/style.css" />
     </head>
     <body>
-    <div class="container">
-    <div class="row align-items-center ">
-        <div class="col-6 mx-auto">
-            <div class="text-center">
-                <?php
-                echo '
-                <img id="profile-img" class="rounded-circle profile-img-card" src="'.UPLOAD_DIR.'logo.png" alt=""></img>
-                '
-                ?>
-                <h1>One Piece Love</h1>
-            </div>
-            <div class="p-3 mb-2 bg-warning text-dark">
-                <div class="login-wrap p-2 p-md-4">
-
-    <main>
-    <?php
-    if(isset($templateParams["nome"])){
-        require($templateParams["nome"]);
-    }
-    ?>
-    </main>
+        <div class="container">
+            <div class="row align-items-center ">
+                <div class="col-10 col-md-6 mx-auto">
+                    <div class="text-center">
+                        <?php
+                        echo '
+                        <img id="profile-img" class="rounded-circle" src="'.UPLOAD_DIR.'logo.png" alt=""></img>
+                        '
+                        ?>
+                        <h1>One Piece Love</h1>
+                    </div>
+                    <div class="p-3 mb-2 bg-warning text-dark">
+                        <div class="login-wrap p-2 p-md-4">
+                        <main>
+                        <?php
+                            if(isset($templateParams["js"])):
+                                foreach($templateParams["js"] as $script):
+                        ?>
+                                <script src="<?php echo $script; ?>"></script>
+                        <?php
+                                endforeach;
+                            endif;
+                        ?>
+                        </main>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
-    <?php
-    if(isset($templateParams["js"])):
-        foreach($templateParams["js"] as $script):
-    ?>
-        <script src="<?php echo $script; ?>"></script>
-    <?php
-        endforeach;
-    endif;
-    ?>
     </body>
 </html>
