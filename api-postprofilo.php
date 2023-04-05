@@ -2,7 +2,7 @@
 require_once 'bootstrap.php';
 
 if (isUserLoggedIn()) {
-    $result["iduser"] = $_SESSION["iduser"];    
+    $result["iduser"] = isset($_GET["user"]) ? $_GET["user"] :  $_SESSION["iduser"];    
     $posts = $dbh->getPostsProfilo( $result["iduser"]);
     for ($i = 0; $i < count($posts); $i++) {
         $posts[$i]["immaginepost"] = UPLOAD_DIR . $posts[$i]["immaginepost"];

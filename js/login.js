@@ -65,7 +65,6 @@ function login(email, password) {
     formData.append('password', password);
     formData.append('ricordami',ricordami.checked);
     axios.post('api-login.php', formData).then(response => {
-        console.log(response);
         if (response.data["logineseguito"]) {
             window.location.replace('homepage.php');
         } else {

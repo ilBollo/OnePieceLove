@@ -1,4 +1,4 @@
-function showProfile(result){
+function showProfilo(result){
     return `
 <section class="h-100 gradient-custom-2">
   <div class="container py-5 h-100">
@@ -18,12 +18,16 @@ function showProfile(result){
           </div>
           <div class="p-4 text-black" style="background-color: #f8f9fa;">
             <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
-                Edit profile
+                Segui
             </button>
             <div class="d-flex justify-content-end text-center py-1">
+            <div class="px-3">
+                <p class="mb-1 h5">${result["numFollower"]}</p>
+                <p class="small text-muted mb-0">follower</p>
+              </div>
               <div class="px-3">
-                <p class="mb-1 h5">${result["numeroAmici"]}</p>
-                <p class="small text-muted mb-0">Amici</p>
+                <p class="mb-1 h5">${result["numFollowed"]}</p>
+                <p class="small text-muted mb-0">profili seguiti</p>
               </div>
             </div>
           </div>
@@ -54,10 +58,10 @@ main.innerHTML = `
                     <div id="contenuto"></div>
                 `;
 
-axios.get('api-profile.php').then(response => {
-    console.log(response);
-    const profileHeader = showProfile(response.data);
+axios.get('api-profilo.php'+location.search).then(response => {
+  console.log(response);
+    const profiloHeader = showProfilo(response.data);
     const header = document.querySelector('#header');
-    header.innerHTML = profileHeader;
+    header.innerHTML = profiloHeader;
     
 });

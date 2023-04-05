@@ -1,7 +1,3 @@
-/**
- * Creo form di iscrizione
- * @returns form di iscrizione
- */
 function generaIscrizioneForm(){
     let form = `
     <div class="error_form" hidden></div>
@@ -22,7 +18,7 @@ function generaIscrizioneForm(){
             <input type="date" id="data_nascita" name="data_nascita" class="form-control" required></input>
         </div>    
         <div class="form-outline mb-4">        
-            <input type ="tel" id="telefono" name="telefono" class="form-control" placeholder="Telefono" required></input>
+            <input type ="tel" id="telefono" name="telefono" class="form-control" placeholder="Telefono"></input>
         </div>
         <div class="form-outline mb-4">        
             <input type ="text" id="nickname" name="nickname" class="form-control" placeholder="Nickname" onblur="checkNickname()" required></input>
@@ -31,7 +27,7 @@ function generaIscrizioneForm(){
             <input type ="password" id="password" name="password" class="form-control" placeholder="Password" required></input>
         </div>
         <div class="form-outline mb-4">        
-            <input type ="password" id="conferma_password" name="conferma_password" class="form-control" placeholder="Conferma Password" oninput="checkConfirmPassword()" required></input>
+            <input type ="password" id="conferma_password" name="conferma_password" class="form-control" placeholder="Conferma Password" oninput="checkConfermaPassword()" required></input>
         </div>
         <label for="personaggi_lista">
             Seleziona il tuo personaggio preferito di One Piece:
@@ -50,28 +46,29 @@ function generaIscrizioneForm(){
 
 
 function submitForm(){
-    let formData = new FormData();
-    formData.append('email',document.getElementById('email').value);
-    formData.append('nome',document.getElementById('nome').value);
-    formData.append('cognome',document.getElementById('cognome').value);
-    formData.append('data_nascita',document.getElementById('data_nascita').value);
-    formData.append('telefono',document.getElementById('telefono').value);
-    formData.append('nickname',document.getElementById('nickname').value);
-    formData.append('password',document.getElementById('password').value);
-    formData.append('conferma_password',conferma_password.value);
-    formData.append('personaggio', document.getElementById('personaggi_lista').value);
-
-    axios.post('api-iscriviti.php',formData).then(response => {
-        console.log(response);
-        let error_div = document.querySelector('div.error_form');
-        if(response.data.errorMsg !== "" && response.data.errorMsg !== undefined){
-            error_div.innerHTML = response.data.errorMsg;
-            error_div.removeAttribute('hidden');
-            error_div.focus();
-        }  else if(response.data.loggedIn === true) {
-            window.location.replace("homepage.php");
-        }
-    });
+    let error_div = document.querySelector('div.error_form');
+    if( error_div.innerHTML.length === 0){
+        let formData = new FormData();
+        formData.append('email',document.getElementById('email').value);
+        formData.append('nome',document.getElementById('nome').value);
+        formData.append('cognome',document.getElementById('cognome').value);
+        formData.append('data_nascita',document.getElementById('data_nascita').value);
+        formData.append('telefono',document.getElementById('telefono').value);
+        formData.append('nickname',document.getElementById('nickname').value);
+        formData.append('password',document.getElementById('password').value);
+        formData.append('conferma_password',conferma_password.value);
+        formData.append('personaggio', document.getElementById('personaggi_lista').value);
+        axios.post('api-iscriviti.php',formData).then(response => {
+            let error_div = document.querySelector('div.error_form');
+            if(response.data.errorMsg !== "" && response.data.errorMsg !== undefined){
+                error_div.innerHTML = response.data.errorMsg;
+                error_div.removeAttribute('hidden');
+                error_div.focus();
+            }  else if(response.data.loggedIn === true) {
+                window.location.replace("homepage.php");
+            }
+        });
+    }
 }
 
 const main = document.querySelector("main");
@@ -96,6 +93,20 @@ function creaPersonaggi(personaggi){
     return result;
 }
 
+function checkConfermaPassword(){
+    let password = document.getElementById('password');
+    let confPassword = document.getElementById('conferma_password');
+    let error_div = document.querySelector("div.error_form");
+    if (password.value !==confPassword.value){
+        error_div.innerHTML = "Password e conferma password sono diversi";    
+        error_div.removeAttribute('hidden');
+        error_div.focus();
+    } else {
+        error_div.innerHTML ='';
+        error_div.focus();
+    }
+}
+
 
 /**
  * Check nickname non usato e valido
@@ -104,12 +115,16 @@ function checkNickname(){
     let nickname = document.getElementById('nickname');
     if(!nickname.validity.valueMissing){
         let formData = new FormData();
-        formData.append('checkNickname',nickname.value);
+        formData.append('nickname',nickname.value);
         axios.post('api-iscriviti.php',formData).then(response => {
-            if(response.data.errorMsg !== "" && response.data.errorMsg !== undefined){
-                let error_div = document.querySelector("div.error_form");
+            console.log(response);
+            let error_div = document.querySelector("div.error_form");
+            if(response.data.errorMsg !== undefined){
                 error_div.innerHTML = response.data.errorMsg;    
                 error_div.removeAttribute('hidden');
+                error_div.focus();
+            } else {
+                error_div.innerHTML ='';
                 error_div.focus();
             }
         });

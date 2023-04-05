@@ -21,7 +21,7 @@ function generaPost(post){
                                     <p class="mt-3 mb-4 pb-2">
                                     <img class="img-fluid" src="${post[i]["immaginepost"]}" alt="Image">
                                     <h2>${post[i]["titolo"]}</h2>
-                                    <p>${post[i]["anteprimapost"]}</p>
+                                    <p>${post[i]["testo"]}</p>
                                     </p>
             `;
             let likes = showLikes(post[i]["idpost"], post[i]["numLike"], post[i]["isMyReaction"], post[i]["myReaction"])
@@ -144,9 +144,8 @@ function inserisciCommento(idpost) {
 
 
 
-axios.get('api-postprofilo.php')
+axios.get('api-postprofilo.php'+location.search)
     .then(response => {
-    console.log(response.data);
      let posts = generaPost(response.data);
      const postUtente = document.querySelector('#contenuto');
     postUtente.innerHTML = posts;

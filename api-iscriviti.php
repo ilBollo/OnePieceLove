@@ -5,9 +5,9 @@ $result['loggedIn'] = false;
 
 if (!isUserLoggedIn()) {
     $result['errorMsg'] = "";
-    if (isset($_POST['checkNickname'])) {
+    if (isset($_POST['nickname'])) {
         $result['valid'] = false;
-        $nickname = Input::filter_string($_POST['checkNickname']);
+        $nickname = $_POST['nickname'];
         if (!empty($nickname)) {
             if (count($dbh->cercaAccountByNickname($nickname)) != 0) {
                 $result['errorMsg'] = 'Nickname già utilizzato';
@@ -18,7 +18,7 @@ if (!isUserLoggedIn()) {
             $result['errorMsg'] = 'NickName obbligatorio';
         }
     }
-    else if(empty($result['errorMsg'])){
+    if(empty($result['errorMsg'] )){
         $dbh->insertAccount($_POST['email'], $_POST['nome'], $_POST['cognome'], $_POST['data_nascita'], $_POST['telefono'], $_POST['nickname'], $_POST['password'], $_POST['personaggio']);
         $result['loggedIn'] = true;
     }
