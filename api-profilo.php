@@ -14,6 +14,8 @@ if(isUserLoggedIn()){
     $result["personaggiopreferito"] = $user["personaggio_preferito"];
     $result["numFollower"] = count($dbh->getUserFollower($result["iduser"]));
     $result["numFollowed"] = count($dbh->getUserFollowed($result["iduser"]));
+    $result["isMyProfilo"] = $_SESSION["iduser"] == $result["iduser"];
+    $result["seguito"] = $result["isMyProfilo"] ? false : $dbh->checkSeguito($_SESSION["iduser"] , $result["iduser"]);
 
 }
 

@@ -1,4 +1,4 @@
-function generaPost(post){
+/*function generaPost(post){
     let result = "";
     for(let i=0; i < post.length; i++){
         let singolo = `
@@ -24,7 +24,7 @@ function generaPost(post){
                                     <p>${post[i]["testo"]}</p>
                                     </p>
             `;
-            let likes = showLikes(post[i]["idpost"], post[i]["numLike"], post[i]["isMyReaction"], post[i]["myReaction"])
+            let likes = showLikes(post[i]["idpost"], post[i]["numLike"], post[i]["myReaction"])
             +                   `</div>
             `;
              
@@ -63,7 +63,7 @@ function mostraCommenti(id) {
   let commentiDiv = document.getElementById("commenti"+id);
   if (commentiDiv.style.display === "none") {
     commentiDiv.style.display = "block";
-    showCommenti(id,commentiDiv);
+    caricaCommenti(id,commentiDiv);
   } else {
     commentiDiv.style.display = "none";
   }
@@ -75,11 +75,11 @@ function deleteComment(idcomment, idpost){
     form_data.append("idPost", idpost);
     axios.post('api-commenti.php', form_data).then(response =>{
         let commentiDiv = document.getElementById("commenti"+idpost);
-        showCommenti(idpost,commentiDiv);
+        caricaCommenti(idpost,commentiDiv);
     });
 }
 
-function showCommenti(id,commentiDiv) {
+function caricaCommenti(id,commentiDiv) {
     let formData = new FormData();
 	formData.append('idpost', id);
     let result =``;
@@ -112,9 +112,6 @@ function showCommenti(id,commentiDiv) {
                 result += singolo;
             }
             commentiDiv.innerHTML = result;
-    })
-    .catch(error => {
-      console.error(error);
     });
 }
 
@@ -128,32 +125,21 @@ function inserisciCommento(idpost) {
         let formData = new FormData();
         formData.append('idpost', idpost);
         formData.append('comment', comment.value);
-    
         axios.post('api-commenti.php', formData)
         .then(response => {
             comment.value = "";
             mostraCommenti(idpost)
-        })
-        .catch(error => {
-        console.error(error);
         });
     }
   }
   
-
-
-
+*/
 
 axios.get('api-postprofilo.php'+location.search)
     .then(response => {
      let posts = generaPost(response.data);
      const postUtente = document.querySelector('#contenuto');
     postUtente.innerHTML = posts;
-    main.innerHTML += `
-    <section>
-        <a href="gestisci-post.php?action=1">Inserisci Post</a>
-    </section>
-    `;
 });
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><?php echo $templateParams["titolo"]; ?></title>

@@ -31,20 +31,6 @@ function generaLoginForm(loginerror = null) {
 }
 
 
-const main = document.querySelector("main");
-
-
-axios.get('api-login.php').then(response => {
-    if (response.data["logineseguito"]) {
-        // Utente loggato mi sposto nella home
-        header('Location: homepage.php');
-        } else {
-        // Utente NON loggato
-        visualizzaLoginForm();
-    }
-});
-
-
 function visualizzaLoginForm() {
     // Utente NON loggato
     let form = generaLoginForm();
@@ -72,3 +58,14 @@ function login(email, password) {
         }
     });
 }
+
+const main = document.querySelector("main");
+axios.get('api-login.php').then(response => {
+    if (response.data["logineseguito"]) {
+        // Utente loggato mi sposto nella home
+        header('Location: homepage.php');
+        } else {
+        // Utente NON loggato
+        visualizzaLoginForm();
+    }
+});

@@ -48,10 +48,10 @@ class DatabaseHelper{
     /**
      * inserisce il nuovo account
      */
-    public function insertAccount(string $email, string $nome, string $cognome,string $data_nascita, int  $telefono, string $nickname, string $password, int $personaggio) : bool{
+    public function insertAccount(string $email, string $nome, string $cognome,string $data_nascita, string  $telefono, string $nickname, string $password, int $personaggio) : bool{
         $query ="INSERT INTO ACCOUNT (email,nome,cognome,datanascita,telefono,nickname, password, idpersonaggio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ssssissi', $email, $nome, $cognome, $data_nascita, $telefono, $nickname, $password, $personaggio);
+        $stmt->bind_param('sssssssi', $email, $nome, $cognome, $data_nascita, $telefono, $nickname, $password, $personaggio);
         return $stmt->execute();
     }
 
@@ -59,7 +59,7 @@ class DatabaseHelper{
      * trova i post degli utenti seguiti, i propri e di quelli che amano lo stesso personaggio
      */
     public function getPosts(int $iduser){
-        $query = "SELECT idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio 
+        $query = "SELECT DISTINCT idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio 
         FROM post inner join account on post.iduser=account.iduser left join amicizia a on a.followed =post.iduser
         where post.idUser = ? or a.follower=? or account.IdPersonaggio = (SELECT IdPersonaggio from account where account.idUser = ?)
         ORDER BY datapost DESC";
@@ -92,11 +92,11 @@ class DatabaseHelper{
     /**
      * inserisce un post
      */
-    public function insertPost($titolopost, $testopost, $datapost, $imgpost, $iduser){
+    public function insertPost($titolopost, $testopost, $imgpost, $iduser){
     
-        $query = "INSERT INTO post (titolo, testo, datapost, immaginepost, iduser) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO post (titolo, testo, datapost, immaginepost, iduser) VALUES (?, ?, NOW(), ?, ?)";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ssssi',$titolopost, $testopost, $datapost, $imgpost, $iduser);
+        $stmt->bind_param('sssi',$titolopost, $testopost, $imgpost, $iduser);
         $stmt->execute();
         
         return $stmt->insert_id;
@@ -165,7 +165,7 @@ class DatabaseHelper{
     /**
      * aggiunge un commento ad un post
      */
-    function aggiungiCommento(int $idpost, string $iduser, string $commento){
+    function aggiungiCommento(int $idpost, int $iduser, string $commento){
         $query = "INSERT INTO commento (idpost, iduser, contenuto, dataCommento) VALUES (?, ?, ?, NOW())";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('iis', $idpost, $iduser, $commento);
@@ -197,10 +197,19 @@ class DatabaseHelper{
         return $result->fetch_assoc();
     }
 
+    public function checkSeguito(int $follower , int $followed){
+        $query = "select count(*) numero FROM amicizia WHERE amicizia.follower = ? and amicizia.followed = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii',$follower , $followed);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return ($result["numero"] >= 1);
+    }
+
     /**
-     * ritorna i profili seguiti
+     * ritorna i profili che ti seguono
      */
-    public function getUserFollower(int $iduser){
+    public function getUserFollowed(int $iduser){
         $query = "SELECT ac.nickname, idpersonaggio FROM amicizia inner JOIN account ac ON amicizia.followed = ac.iduser WHERE amicizia.follower = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $iduser);
@@ -211,9 +220,9 @@ class DatabaseHelper{
     }
 
     /**
-     * ritorna i profili che tu seguono
+     * ritorna i profili che segui
      */
-    public function getUserFollowed(int $iduser){
+    public function getUserFollower(int $iduser){
         $query = "SELECT ac.nickname, idpersonaggio FROM amicizia inner JOIN account ac ON amicizia.follower = ac.iduser WHERE amicizia.followed = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $iduser);
@@ -234,6 +243,49 @@ class DatabaseHelper{
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    function insertFollowed(int $followed, int $io){
+        $query = "INSERT INTO amicizia (followed, follower, notificaAperta) VALUES (?, ?, -1)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $followed, $io);
+        $result=$stmt->execute();
+        return $result;
+    }
+
+    function removeFollowed(int $followed, int $io){
+        $query = "DELETE FROM amicizia WHERE followed = ? AND follower = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $followed, $io);
+        $result=$stmt->execute();
+        return $result;
+    }
+
+    function getNnotifAperte(int $iduser){
+        $query = "select count(*) as numero FROM amicizia WHERE amicizia.followed = ? and amicizia.notificaAperta = -1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i',$iduser);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return ($result["numero"]);
+    }
+
+    function getDescrNotifAperte(int $iduser){
+        $query = "select nickname,amicizia.followed, amicizia.follower FROM amicizia inner join account ac on ac.idUser = amicizia.follower WHERE amicizia.followed = ? and amicizia.notificaAperta = -1";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i',$iduser);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function chiudiNotifica(int $follower,int $followed){
+        $query = "UPDATE amicizia SET notificaAperta = 0 WHERE follower = ? AND followed = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $follower, $followed);
+        
+        return $stmt->execute();
+    }
+    
 
 }
 

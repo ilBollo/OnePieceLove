@@ -9,7 +9,7 @@ if(isset($imgpost)){
 }
 
 
-$result['inserito'] = $dbh->insertPost($_POST['titolo'], $_POST['testo'], date("Y-m-d"), $percorso, $_SESSION["iduser"]);
+$result['inserito'] = $dbh->insertPost($_POST['titolo'], $_POST['testo'], $percorso, $_SESSION["iduser"]);
 
 header('Content-Type: application/json');
 echo json_encode($result);

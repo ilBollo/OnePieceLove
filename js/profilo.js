@@ -11,22 +11,21 @@ function showProfilo(result){
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
               style="width: 150px; z-index: 1"/>
             </div>
+            <input type="hidden" id="getProfile" value="${result["iduser"]}">
              <div class="ms-3" style="margin-top: 130px;">
               <h5>${result["nome"]} ${result["cognome"]}</h5>
               <p style="font-family: verdana;">${result["nickname"]}</p>
             </div>
           </div>
-          <div class="p-4 text-black" style="background-color: #f8f9fa;">
-            <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
-                Segui
-            </button>
+          <div class="p-4 text-black" id=bottoneSegui style="background-color: #f8f9fa;">
+            ${result["isMyProfilo"] ? '' : generaFollowButton(result["seguito"])}
             <div class="d-flex justify-content-end text-center py-1">
             <div class="px-3">
-                <p class="mb-1 h5">${result["numFollower"]}</p>
+                <p id="numeroFollower" class="mb-1 h5">${result["numFollower"]}</p>
                 <p class="small text-muted mb-0">follower</p>
               </div>
               <div class="px-3">
-                <p class="mb-1 h5">${result["numFollowed"]}</p>
+                <p  class="mb-1 h5">${result["numFollowed"]}</p>
                 <p class="small text-muted mb-0">profili seguiti</p>
               </div>
             </div>
@@ -50,18 +49,40 @@ function showProfilo(result){
 }  
 
 
-
-
 const main = document.querySelector("main");
 main.innerHTML = `
                     <div id="header"></div>
                     <div id="contenuto"></div>
                 `;
 
+
+function generaFollowButton(seguito) {
+                  if (!seguito) {
+                      return '<button id="followButton" class="btn btn-outline-dark" name="follow" onclick="updateFollowed(true)">Segui</button>';
+                  } else {
+                      return '<button id="followButton" class="secondary followButton unfollowerButton" name="unfollow" onclick="updateFollowed(false)">Non seguire</button>';
+                  }
+              }
+
+function updateFollowed(seguito){
+  let button = document.getElementById("followButton");
+  let formData = new FormData();
+  user = document.getElementById("getProfile").value;
+  formData.append('user', user);
+  formData.append('value', seguito ? "add" : "remove");
+  axios.post('api-follower.php', formData).then(response => {
+    console.log(response.data["inserito"]);
+    if(response.data["inserito"]){
+      console.log(response.data["numFollower"]);
+      document.getElementById("numeroFollower").textContent = response.data["numFollower"];
+      document.getElementById("followButton").outerHTML = generaFollowButton(seguito);
+    }
+  });
+}
+
+
 axios.get('api-profilo.php'+location.search).then(response => {
-  console.log(response);
     const profiloHeader = showProfilo(response.data);
     const header = document.querySelector('#header');
-    header.innerHTML = profiloHeader;
-    
+    header.innerHTML = profiloHeader;    
 });

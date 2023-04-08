@@ -1,15 +1,13 @@
-function showLikes(idpost, numLike, myReaction){
+/*function showLikes(idpost, numLike, myReaction){
 	let likeValue = false;
 		if(myReaction == 1){
 			likeValue = true;
 		} 
-	
 	let result =`
 		<button class="btn btn-primary" onclick="updateLike(${likeValue}, ${idpost})">
 		<i class="bi bi-hand-thumbs-up" id="like${idpost}">${numLike}</i>
 		</button>		
 	`;
-			
 	return result;
 }
   
@@ -24,5 +22,5 @@ function updateLike(likeValue, idpost){
 		}
 	});
 }
-
+*/
 

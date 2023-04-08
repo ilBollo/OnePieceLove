@@ -35,3 +35,4 @@ function utentiFilter(post){
           document.querySelector('#risultati_ricerca').innerHTML = '';
         }
       });
+

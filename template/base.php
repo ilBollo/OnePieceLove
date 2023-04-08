@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
   <head>
       <meta charset="utf-8" />
       <title><?php echo $templateParams["titolo"]; ?></title>
@@ -26,6 +26,39 @@
             <li class="nav-item"><a class="nav-link" href="profilo.php">Profilo</a></li>
             <li class="nav-item"> <a class="nav-link" href="logout.php">Logout</a></li>
           </ul>
+          <div class="dropdown">
+            <button id="notifiche" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell-fill"></i>
+              <span class="badge badge-secondary" id="nNotifiche"><?php echo $templateParams["notifiche"] ?></span>
+            </button>
+              <ul id="elenco-notifiche" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <script>
+                        function closeNotifica(follower,followed) {
+                          let form_data = new FormData();
+                          form_data.append("follower", follower);
+                          form_data.append("followed", followed);
+                          axios.post('api-notifiche.php', form_data)
+                          .then(response =>{
+                           let nNotif = document.getElementById('nNotifiche');
+                           let numero = parseInt(nNotif.innerText);
+                           nNotif.innerText = numero -1;
+                          });
+                        }
+                </script>
+                <?php if(empty($templateParams["notificheDescr"])): ?>
+                  <li>non ci sono notifiche aperte</li>
+                <?php else: ?>
+                  <?php foreach($templateParams["notificheDescr"] as $notificaDescr): ?>
+                    <li>
+                      <?php echo $notificaDescr["nickname"];?> ha inizia a seguirti
+                      <div class="text-end">
+                      <button type="button" class="btn btn-danger" onclick="closeNotifica('<?php echo $notificaDescr["follower"]; ?>','<?php echo $notificaDescr["followed"]; ?>')">X</button>
+                      </div>
+                    </li>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </ul>
+          </div>
           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
             <input type="search" class="form-control" id="nome_utente" placeholder="Search..." aria-label="Search">
             <div id="risultati_ricerca"></div>
@@ -33,7 +66,22 @@
         </div>
       </div>
     </header>
-    <script src="js/ricercaUtenti.js"></script>
+
+    <script 
+    src="js/ricercaUtenti.js">
+
+ /* $(document).ready(function() {
+    $(".elimina-notifica").click(function() {
+      var notificaId = $(this).data("notifica-id");
+
+      $("#elenco-notifiche").load("carica_notifiche.php");
+
+      // Aggiorna il contatore delle notifiche
+      var nNotifiche = parseInt($("#nNotifiche").text());
+      $("#nNotifiche").text(nNotifiche - 1);
+    });
+  });*/
+  </script>
 
     <main>
       <?php
@@ -48,3 +96,4 @@
     </main>
   </body>
 </html>
+
