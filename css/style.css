@@ -13,3 +13,13 @@
 h1,a {
     color:red;
 }
+
+
+#inserisci_post {
+    background-color: #cce6ff;
+    padding: 20px;
+}
+
+.card-footer {
+    background-color: #cce6ff!important;
+  }

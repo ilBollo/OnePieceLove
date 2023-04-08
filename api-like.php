@@ -2,34 +2,19 @@
 require_once 'bootstrap.php';
 
 if (isUserLoggedIn()) {
-    if (isset($_POST["idpost"]) && isset($_POST["likeValue"])) {
-        $likeValue = $_POST["likeValue"];
-        if (count($dbh->checkReaction($_POST["idpost"], $_SESSION["iduser"])) > 0) {
+    if (isset($_POST["idpost"]) && isset($_POST["autore"])) {
+        if ($dbh->checkReaction($_POST["idpost"], $_SESSION["iduser"])) {
                 $result["updateLike"] = $dbh->removeLike($_POST["idpost"], $_SESSION["iduser"]);
                 $result["isMyReaction"] = false;
             
         } else {
-            $result["updateLike"] = $dbh->insertLike($_POST["idpost"], $_SESSION["iduser"], $likeValue);
+            $result["updateLike"] = $dbh->insertLike($_POST["idpost"], $_SESSION["iduser"]);
             $result["isMyReaction"] = true;
+            if ($result["isMyReaction"]){
+                $result["aggiuntaNotifica"] = $dbh->insertNotifica(3,$_SESSION["iduser"],$_POST["autore"]);
+            }
         }
         $result["numLike"] = $dbh->countReactions($_POST["idpost"]);
-
-        /**
-         * Check if all went good and send a notification
-         */
- //       if ($result["updateLike"]) {
- //           $userToNotify = $dbh->getUserByPost($_POST["idpost"]);
- //           $check = $dbh->checkCommentNotification($userToNotify[0]["username"]);
- //           if (count($check) != 0) {
- //               $dbh->insertNotification(date('Y-m-d H-i-s'), 1, $_SESSION["username"], $userToNotify[0]["username"]);
- //           }
- //       }
-        /**
-         * Update post number of like and dislike
-         */
-  //      $result["reactions"] = $dbh->getReactions($_POST["idpost"]);
-  //      $result["numLike"] = count(array_filter($result["reactions"], function ($p) {
-  //          return $p["likes"]; }));
     }
 }
 

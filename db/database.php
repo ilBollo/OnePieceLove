@@ -59,7 +59,7 @@ class DatabaseHelper{
      * trova i post degli utenti seguiti, i propri e di quelli che amano lo stesso personaggio
      */
     public function getPosts(int $iduser){
-        $query = "SELECT DISTINCT idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio 
+        $query = "SELECT DISTINCT idpost, post.iduser as autore, titolo, immaginepost, datapost, testo, nickname, idpersonaggio 
         FROM post inner join account on post.iduser=account.iduser left join amicizia a on a.followed =post.iduser
         where post.idUser = ? or a.follower=? or account.IdPersonaggio = (SELECT IdPersonaggio from account where account.idUser = ?)
         ORDER BY datapost DESC";
@@ -119,21 +119,21 @@ class DatabaseHelper{
      * ritorna la mia reazione
      */
     function checkReaction(int $idpost, string $iduser){
-        $query = "SELECT mipiace FROM mipiace WHERE idpost = ? AND iduser = ?";
+        $query = "SELECT count(*) numero FROM mipiace WHERE idpost = ? AND iduser = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('ii', $idpost, $iduser);
         $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $result = $stmt->get_result()->fetch_assoc();
+        return ($result["numero"] >= 1);
     }
 
     /**
      * inserisce un nuovo like
      */
-    function insertLike(int $idpost, string $iduser, int $likeValue){
-        $query = "INSERT INTO mipiace (idpost, iduser, mipiace) VALUES (?, ?, ?)";
+    function insertLike(int $idpost, string $iduser){
+        $query = "INSERT INTO mipiace (idpost, iduser) VALUES (?, ?)";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iii', $idpost, $iduser, $likeValue);
+        $stmt->bind_param('ii', $idpost, $iduser);
         $result = $stmt->execute();
         return $result;
     }
@@ -261,7 +261,7 @@ class DatabaseHelper{
     }
 
     function getNnotifAperte(int $iduser){
-        $query = "select count(*) as numero FROM amicizia WHERE amicizia.followed = ? and amicizia.notificaAperta = -1";
+        $query = "select count(*) as numero FROM notifica WHERE notifica.idUser = ? and notifica.notificaAperta = -1";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i',$iduser);
         $stmt->execute();
@@ -270,7 +270,7 @@ class DatabaseHelper{
     }
 
     function getDescrNotifAperte(int $iduser){
-        $query = "select nickname,amicizia.followed, amicizia.follower FROM amicizia inner join account ac on ac.idUser = amicizia.follower WHERE amicizia.followed = ? and amicizia.notificaAperta = -1";
+        $query = "select notif.idNotifica, notif.idFollower, seguace.nickname, tipoN.testo  FROM notifica notif inner join tiponotifica tipoN on tipoN.idTipo = notif.idtipo inner join account seguace on seguace.idUser = notif.idFollower WHERE notif.idUser = ? and notif.notificaAperta = -1;";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i',$iduser);
         $stmt->execute();
@@ -278,11 +278,21 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    function chiudiNotifica(int $follower,int $followed){
-        $query = "UPDATE amicizia SET notificaAperta = 0 WHERE follower = ? AND followed = ?";
+        /**
+     * inserisce una nuova notifica
+     */
+    public function insertNotifica(int $tipo, int $idUser, int $idFollower){
+    
+        $query = "INSERT INTO notifica (idtipo, datanotifica, notificaaperta, iduser, idfollower) VALUES (?, NOW(), -1, ?, ?)";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ii', $follower, $followed);
-        
+        $stmt->bind_param('iii', $tipo, $idUser, $idFollower);
+        return $stmt->execute();
+    }
+
+    function chiudiNotifica(int $idnotifica){
+        $query = "UPDATE notifica SET notificaAperta = 0 WHERE idNotifica = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idnotifica);
         return $stmt->execute();
     }
     

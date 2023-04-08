@@ -4,9 +4,11 @@ function generaLoginForm(loginerror = null) {
                     <h2 class="text-center">Login</h2>
                     <p></p>
                     <div class="form-outline mb-4">
+                        <label for="email" hidden>email</label>
                         <input type="text" name="email" id="email" class="form-control" placeholder="email"  required autofocus>
                     </div>
                     <div class="form-outline mb-4">
+                    <label for="password" hidden>password</label>
                     <input type="password" name="password" id="password" class="form-control" placeholder="password" required>
                     </div>
                     <div class="form-group">

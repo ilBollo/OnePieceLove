@@ -1,6 +1,6 @@
 function bottoneRacconta(){
    return `
-    <div class="container my-5 py-5">
+    <div class="container my-4 py-4">
         <div class="row d-flex justify-content-center">
             <div class="col-md-8 col-lg-8 col-xl-8">
                 <button type="button" class="btn btn-warning btn-lg d-block mx-auto text-dark" onclick="visInserimento()">
@@ -8,16 +8,19 @@ function bottoneRacconta(){
                 <form action="#" method="POST" id="inserisci_post" class="card" style="display:none">
                 <p></p>
                     <div class="form-outline mb-4">
-                    <input type="text" id="titolopost" name="titolopost" class="form-control" maxlength="200" placeholder="Titolo.." />
-                     <div class="form-outline mb-4">
+                        <label for="titolopost" hidden>titolopost</label>
+                        <input type="text" id="titolopost" name="titolopost" class="form-control" maxlength="200" placeholder="Titolo.." />
+                    <div>
+                    <div class="form-outline mb-4">
+                        <label for="testopost" hidden>testo storia</label>
                         <textarea id="testopost" name="testopost" class="form-control" maxlength="700" placeholder="Testo Storia..."></textarea>
                     </div>
                     <div class="form-outline mb-4">
                         <label for="imgpost">Aggiungi un immagine
-                        </label><input type="file" name="imgpost" id="imgpost"/>
+                        <input type="file" name="imgpost" id="imgpost"/></label>
                     </div>
-                    <div class="float-left mt-5 pt-1">
-                        <button type="button" class="btn btn-primary btn-lg" name="inserisci" value="Inserisci" onclick="inserisciPost()">Inserisci Storia
+                    <div class="float-left mt-2">
+                        <button type="button" class="btn btn-primary btn-lg" name="inserisci" value="Inserisci" onclick="inserisciPost()">Pubblica Storia
                         </button>
                     </div>
                 </form>

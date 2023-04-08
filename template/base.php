@@ -28,20 +28,27 @@
           </ul>
           <div class="dropdown">
             <button id="notifiche" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-bell-fill"></i>
+              <em class="bi bi-bell-fill"></em>
               <span class="badge badge-secondary" id="nNotifiche"><?php echo $templateParams["notifiche"] ?></span>
             </button>
-              <ul id="elenco-notifiche" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <ul id="elenco-notifiche" class="dropdown-menu">
                 <script>
-                        function closeNotifica(follower,followed) {
+                        function closeNotifica(idnotifica) {
                           let form_data = new FormData();
-                          form_data.append("follower", follower);
-                          form_data.append("followed", followed);
+                          form_data.append("idnotifica", idnotifica);
                           axios.post('api-notifiche.php', form_data)
                           .then(response =>{
                            let nNotif = document.getElementById('nNotifiche');
                            let numero = parseInt(nNotif.innerText);
                            nNotif.innerText = numero -1;
+                           let notif = document.getElementById('notif' + idnotifica);
+                           notif.remove();
+                           if (parseInt(nNotif.innerText) === 0) {
+                            let ul = document.getElementById('elenco-notifiche');
+                            let li = document.createElement('li');
+                            li.innerText = 'non ci sono notifiche aperte';
+                            ul.appendChild(li);
+                          }
                           });
                         }
                 </script>
@@ -49,10 +56,10 @@
                   <li>non ci sono notifiche aperte</li>
                 <?php else: ?>
                   <?php foreach($templateParams["notificheDescr"] as $notificaDescr): ?>
-                    <li>
-                      <?php echo $notificaDescr["nickname"];?> ha inizia a seguirti
+                    <li id="notif<?php echo $notificaDescr["idNotifica"]; ?>">
+                      <?php echo $notificaDescr["nickname"]. ' '.$notificaDescr["testo"];?> 
                       <div class="text-end">
-                      <button type="button" class="btn btn-danger" onclick="closeNotifica('<?php echo $notificaDescr["follower"]; ?>','<?php echo $notificaDescr["followed"]; ?>')">X</button>
+                      <button type="button" class="btn btn-danger" onclick="closeNotifica('<?php echo $notificaDescr["idNotifica"]; ?>')">X</button>
                       </div>
                     </li>
                   <?php endforeach; ?>
@@ -60,6 +67,7 @@
               </ul>
           </div>
           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+            <label for="nome_utente" hidden>ricerca utente</label>
             <input type="search" class="form-control" id="nome_utente" placeholder="Search..." aria-label="Search">
             <div id="risultati_ricerca"></div>
           </form>
@@ -68,20 +76,8 @@
     </header>
 
     <script 
-    src="js/ricercaUtenti.js">
-
- /* $(document).ready(function() {
-    $(".elimina-notifica").click(function() {
-      var notificaId = $(this).data("notifica-id");
-
-      $("#elenco-notifiche").load("carica_notifiche.php");
-
-      // Aggiorna il contatore delle notifiche
-      var nNotifiche = parseInt($("#nNotifiche").text());
-      $("#nNotifiche").text(nNotifiche - 1);
-    });
-  });*/
-  </script>
+      src="js/ricercaUtenti.js">
+    </script>
 
     <main>
       <?php

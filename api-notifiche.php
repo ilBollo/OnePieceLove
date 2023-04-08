@@ -2,8 +2,8 @@
 require_once 'bootstrap.php';
 
 if (isUserLoggedIn()) {
-    if(isset($_POST["follower"],$_POST["followed"])){
-        $dbh->chiudiNotifica($_POST["follower"],$_POST["followed"]);
+    if(isset($_POST["idnotifica"])){
+        $dbh->chiudiNotifica($_POST["idnotifica"]);
         $result["ok"] = true;
     }
 }
