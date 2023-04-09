@@ -12,6 +12,7 @@ function generaPost(post){
                                         src="${post[i]["idpersonaggio"]}.jpg" alt="avatar" width="60"
                                         height="60" />
                                         <div>
+                                            <input type="hidden" id="getPostid" value="${post["iduser"]}">
                                             <h6 class="fw-bold text-primary mb-1">${post[i]["nickname"]}</h6>
                                             <p class="text-muted small mb-0">
                                             Pubblicato il ${post[i]["datapost"]}
@@ -38,7 +39,7 @@ function generaPost(post){
                                         </div>
                                     </div>
                                     <div class="float-end mt-2 pt-1">
-                                        <button type="button" class="btn btn-primary btn-lg" onclick="inserisciCommento(${post[i]["idpost"]})">Pubblica</button>
+                                        <button type="button" class="btn btn-primary btn-lg" onclick="inserisciCommento(${post[i]["idpost"]},${post[i]["autore"]})">Pubblica</button>
                                     </div>
                                     <div class="float-left mt-5 pt-1">
                                     <button onclick="mostraCommenti(${post[i]["idpost"]})">Visualizza tutti i commenti</button>
@@ -119,17 +120,20 @@ function mostraCommenti(id) {
   }
 
 
-function inserisciCommento(idpost) {
+function inserisciCommento(idpost, autore) {
     const comment = document.querySelector('#textArea'+idpost);
+    console.log(iduser);
     if(comment.value !== ""){
         //chiudo il blocco dei commenti in modo di ricaricarlo alla successiva visualizzazione
         let commentiDiv = document.getElementById("commenti"+idpost);
         commentiDiv.style.display = "none";
         let formData = new FormData();
         formData.append('idpost', idpost);
-        formData.append('comment', comment.value);    
+        formData.append('comment', comment.value);
+        formData.append('autore', autore);
         axios.post('api-commenti.php', formData)
         .then(response => {
+            console.log(response);
             comment.value = "";
             mostraCommenti(idpost)
         });
@@ -151,6 +155,7 @@ function updateLike(idpost, autore){
 	formData.append('idpost', idpost);
     formData.append('autore', autore);
 	axios.post('api-like.php', formData).then(response => {
+        console.log(response);
 		if(response.data["updateLike"]){
 			document.getElementById("like"+idpost).innerText = response.data["numLike"];
 		}
