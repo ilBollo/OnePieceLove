@@ -1,11 +1,10 @@
 function showProfilo(result){
     return `
-<section class="h-100">
-  <div class="container py-3 h-100">
+  <div class="container my-4 py-4">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-lg-9 col-xl-7">
+      <div class="col-md-8 col-lg-8 col-xl-8">
         <div class="card">
-          <div class="rounded-top text-white bg-black h-200 d-flex flex-row">
+          <div class="rounded-top text-white bg-primary h-200 d-flex flex-row">
             <div class="ms-4 mt-5 d-flex flex-column w-150">
               <img src="${result["idpersonaggio"]}.jpg"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
@@ -17,8 +16,7 @@ function showProfilo(result){
               <p style="font-family: verdana;">${result["nickname"]}</p>
             </div>
           </div>
-          <div class="p-4 text-black" id="datiaccount">
-            <div class="d-flex justify-content-start text-center py-1 id="followButton">
+          <div class="d-flex justify-content-end text-center p-4" id="datiaccount">
               ${result["isMyProfilo"] ? '' : generaFollowButton(result["seguito"])}
               <div class="px-3 ml-auto">
                 <p id="numeroFollower" class="mb-1 h5">${result["numFollower"]}</p>
@@ -28,32 +26,26 @@ function showProfilo(result){
                 <p id="numeroFollowed" class="mb-1 h5">${result["numFollowed"]}</p>
                 <p class="small text-muted mb-0">profili seguiti</p>
               </div>
+          </div>
+         <div class="card-body p-4 bg-light text-black">
+            <p class="fw-normal mb-1">Personaggio preferito</p>
+            <div class="p-4">
+             <p id="personaggioPreferito" class="fw-bold mb-1">${result["personaggiopreferito"]}</p>
             </div>
           </div>
         </div>
-         <div class="card-body p-4 text-black">
-            <div class="mb-5">
-              <p class="lead fw-normal mb-1">Personaggio preferito</p>
-              <div class="p-4" style="background-color: #f8f9fa;">
-                <p class="font-italic mb-1">${result["personaggiopreferito"]}</p>
-              </div>
-            </div>
-         <div class="container">
-         <div class="row">	
-		   <div class="col-lg-6 offset-lg-3">
-			<div class="cardbox shadow-lg bg-white">
+      </div>
     </div>
   </div>
-</section>
     `;
 }  
 
 
 function generaFollowButton(seguito) {
                   if (!seguito) {
-                      return '<button id="followButton" class="btn btn-outline-dark" name="follow" onclick="updateFollowed(true)">Segui</button>';
+                      return '<button type="button" id="bottoneSegui" class="btn btn-outline-dark" name="follow" onclick="updateFollowed(true)">Segui</button>';
                   } else {
-                      return '<button id="followButton" class="secondary followButton unfollowerButton" name="unfollow" onclick="updateFollowed(false)">Non seguire</button>';
+                      return '<button type="button" id="bottoneSegui" class="btn btn-outline-dark" name="unfollow" onclick="updateFollowed(false)">Non seguire</button>';
                   }
               }
 
@@ -66,7 +58,7 @@ function updateFollowed(seguito){
     console.log(response);
     if(response.data["inserito"]){
       document.getElementById("numeroFollower").textContent = response.data["numFollower"];
-      document.getElementById("followButton").outerHTML = generaFollowButton(seguito);
+      document.getElementById("bottoneSegui").outerHTML = generaFollowButton(seguito);
     }
   });
 }

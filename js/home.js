@@ -41,7 +41,11 @@ function visInserimento(id) {
 }
 
 
-axios.get('api-home.php')
+axios.get('api-post.php',{
+    params: {
+      pagina: "homepage.php"
+    }
+  })
     .then(response => {
      let posts = generaPost(response.data);
      let racconta = bottoneRacconta();

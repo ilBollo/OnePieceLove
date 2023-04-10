@@ -7,7 +7,9 @@
       <link rel="stylesheet" type="text/css" href="./css/style.css" />
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/css?family=Quantico" rel="stylesheet">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      <script src="js/notifiche.js"></script>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description" content="Un social network per i fans di One Piece"/>
   </head>
@@ -16,14 +18,16 @@
       <header class="p-3 mb-3 sticky-top border-bottom bg-warning">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <a href="homepage.php">
           <?php
             echo '
-              <img id="toolbar-img" class="rounded-circle" src="'.UPLOAD_DIR.'logo.png" alt=""></img>
+              <img id="toolbar-img" class="rounded-circle" src="'.UPLOAD_DIR.'logo.png" alt="logo, bandiera della ciurma di Ruffy"></img>
               '
           ?>
+          </a>
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li class="nav-item"> <a class="nav-link" href="homepage.php">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="profilo.php">Profilo</a></li>
+            <li class="nav-item"> <a <?php isActive("homepage.php");?> class="nav-link" href="homepage.php">Home</a></li>
+            <li class="nav-item"><a <?php isActive("profilo.php");?> class="nav-link" href="profilo.php">Profilo</a></li>
             <li class="nav-item"> <a class="nav-link" href="logout.php">Logout</a></li>
           </ul>
           <div class="dropdown">
@@ -31,35 +35,15 @@
               <em class="bi bi-bell-fill"></em>
               <span class="badge badge-secondary" id="nNotifiche"><?php echo $templateParams["notifiche"] ?></span>
             </button>
-              <ul id="elenco-notifiche" class="dropdown-menu">
-                <script>
-                        function closeNotifica(idnotifica) {
-                          let form_data = new FormData();
-                          form_data.append("idnotifica", idnotifica);
-                          axios.post('api-notifiche.php', form_data)
-                          .then(response =>{
-                           let nNotif = document.getElementById('nNotifiche');
-                           let numero = parseInt(nNotif.innerText);
-                           nNotif.innerText = numero -1;
-                           let notif = document.getElementById('notif' + idnotifica);
-                           notif.remove();
-                           if (parseInt(nNotif.innerText) === 0) {
-                            let ul = document.getElementById('elenco-notifiche');
-                            let li = document.createElement('li');
-                            li.innerText = 'non ci sono notifiche aperte';
-                            ul.appendChild(li);
-                          }
-                          });
-                        }
-                </script>
+              <ul id="elenco-notifiche" class="dropdown-menu" style="width: 300px;">
                 <?php if(empty($templateParams["notificheDescr"])): ?>
                   <li>non ci sono notifiche aperte</li>
                 <?php else: ?>
                   <?php foreach($templateParams["notificheDescr"] as $notificaDescr): ?>
-                    <li id="notif<?php echo $notificaDescr["idNotifica"]; ?>" class="d-flex align-items-center">
-                      <?php echo '<b>'.$notificaDescr["nickname"].' </b> '.$notificaDescr["testo"];?> 
-                      <div class="text-end">
-                      <button type="button" class="btn btn-danger" onclick="closeNotifica('<?php echo $notificaDescr["idNotifica"]; ?>')">X</button>
+                    <li id="notif<?php echo $notificaDescr["idNotifica"]; ?>" class="d-flex justify-content-between">
+                      <?php echo '<div class="p-2 font-weight-bold"><a href="profilo.php?user='.$notificaDescr["idFollower"].'">'.$notificaDescr["nickname"].' </a></div><div class="p-2"> '.$notificaDescr["testo"].'</div>';?> 
+                      <div class="ml-auto p-2">
+                      <button type="button" class="btn btn-danger text-end" onclick="closeNotifica('<?php echo $notificaDescr["idNotifica"]; ?>')">X</button>
                       </div>
                     </li>
                   <?php endforeach; ?>
@@ -73,11 +57,9 @@
           </form>
         </div>
       </div>
-    </header>
+      <script src="js/ricercaUtenti.js"></script>
 
-    <script 
-      src="js/ricercaUtenti.js">
-    </script>
+    </header>
 
     <main>
       <?php

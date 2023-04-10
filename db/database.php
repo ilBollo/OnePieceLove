@@ -261,18 +261,18 @@ class DatabaseHelper{
     }
 
     function getNnotifAperte(int $iduser){
-        $query = "select count(*) as numero FROM notifica WHERE notifica.idUser = ? and notifica.notificaAperta = -1";
+        $query = "select count(*) as numero FROM notifica notif WHERE notif.idUser = ? and notif.idFollower != ? and notif.notificaAperta = -1";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i',$iduser);
+        $stmt->bind_param('ii',$iduser, $iduser);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
         return ($result["numero"]);
     }
 
     function getDescrNotifAperte(int $iduser){
-        $query = "select notif.idNotifica, notif.idFollower, seguace.nickname, tipoN.testo  FROM notifica notif inner join tiponotifica tipoN on tipoN.idTipo = notif.idtipo inner join account seguace on seguace.idUser = notif.idFollower WHERE notif.idUser = ? and notif.notificaAperta = -1;";
+        $query = "select notif.idNotifica, notif.idFollower, seguace.nickname, tipoN.testo  FROM notifica notif inner join tiponotifica tipoN on tipoN.idTipo = notif.idtipo inner join account seguace on seguace.idUser = notif.idFollower WHERE notif.idUser = ? and notif.idFollower != ? and notif.notificaAperta = -1;";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i',$iduser);
+        $stmt->bind_param('ii',$iduser, $iduser);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);

@@ -10,7 +10,7 @@ if (isUserLoggedIn()) {
         } else {
             $result["updateLike"] = $dbh->insertLike($_POST["idpost"], $_SESSION["iduser"]);
             $result["isMyReaction"] = true;
-            $result["aggiuntaNotifica"] = $dbh->insertNotifica(3,$_SESSION["iduser"], intval($_POST["autore"]));
+            $result["aggiuntaNotifica"] = $dbh->insertNotifica(3, intval($_POST["autore"]),$_SESSION["iduser"]);
         }
         $result["numLike"] = $dbh->countReactions($_POST["idpost"]);
     }

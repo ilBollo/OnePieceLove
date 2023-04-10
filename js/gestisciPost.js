@@ -12,7 +12,7 @@ function generaPost(post){
                                         src="${post[i]["idpersonaggio"]}.jpg" alt="avatar" width="60"
                                         height="60" />
                                         <div>
-                                            <input type="hidden" id="getPostid" value="${post["iduser"]}">
+                                            <input type="hidden" id="getPostid${post[i]["idpost"]}" value="${post[i]["autore"]}">
                                             <h6 class="fw-bold text-primary mb-1">${post[i]["nickname"]}</h6>
                                             <p class="text-muted small mb-0">
                                             Pubblicato il ${post[i]["datapost"]}
@@ -21,7 +21,7 @@ function generaPost(post){
                                     </div>
                                     <p class="mt-3 mb-4 pb-2">
                                     <img class="img-fluid" src="${post[i]["immaginepost"]}" alt="Image">
-                                    <h2>${post[i]["titolo"]}</h2>
+                                    <p class="fs-2 fw-bold mb-2">${post[i]["titolo"]}</p>
                                     <p>${post[i]["testo"]}</p>
                                     </p>
             `;
@@ -122,7 +122,7 @@ function mostraCommenti(id) {
 
 function inserisciCommento(idpost, autore) {
     const comment = document.querySelector('#textArea'+idpost);
-    console.log(iduser);
+    console.log(autore);
     if(comment.value !== ""){
         //chiudo il blocco dei commenti in modo di ricaricarlo alla successiva visualizzazione
         let commentiDiv = document.getElementById("commenti"+idpost);
@@ -155,7 +155,6 @@ function updateLike(idpost, autore){
 	formData.append('idpost', idpost);
     formData.append('autore', autore);
 	axios.post('api-like.php', formData).then(response => {
-        console.log(response);
 		if(response.data["updateLike"]){
 			document.getElementById("like"+idpost).innerText = response.data["numLike"];
 		}
