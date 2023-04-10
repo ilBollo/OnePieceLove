@@ -1,7 +1,7 @@
 function generaIscrizioneForm(){
     let form = `
     <div class="error_form" hidden></div>
-    <form action="#" method="POST" id="iscrivi_form">
+    <form action="#" method="POST" id="iscrivi_form" novalidate>
         <h2 class="text-center">Iscriviti</h2>
         <p></p>
         <div class="form-outline mb-4">
@@ -56,7 +56,7 @@ function submitForm(){
     let error_div = document.querySelector('div.error_form');
     if( error_div.innerHTML.length === 0){
         
-            // Verifica che tutti i campi obbligatori siano stati compilati
+            // Verifico che tutti i campi obbligatori siano stati compilati
     let email = document.getElementById("email").value;
     let nome = document.getElementById("nome").value;
     let cognome = document.getElementById("cognome").value;
@@ -67,7 +67,7 @@ function submitForm(){
     let personaggio = document.getElementById('personaggi_lista').value;
     
     if (email == "" || nome == "" || cognome == "" || data_nascita == "" || password == "" || conferma_password == "" || nickname == "" || personaggio =="") {
-        // Se un campo obbligatorio non è stato compilato, visualizza un messaggio di errore
+        // Se un campo obbligatorio non è stato compilato, visualizzo un messaggio di errore
         error_div.innerHTML = 'Compilare tutti i campi';
         error_div.removeAttribute('hidden');
                 error_div.focus();
@@ -83,7 +83,6 @@ function submitForm(){
         formData.append('conferma_password',conferma_password);
         formData.append('personaggio', personaggio);
         axios.post('api-iscriviti.php',formData).then(response => {
-            console.log(response);
             if(response.data.errorMsg !== "" && response.data.errorMsg !== undefined){
                 let error_div = document.querySelector('div.error_form');
 
@@ -138,7 +137,6 @@ function checkNickname(){
         let formData = new FormData();
         formData.append('nickname',nickname.value);
         axios.post('api-iscriviti.php',formData).then(response => {
-            console.log(response);
             let error_div = document.querySelector("div.error_form");
             if(response.data.errorMsg !== undefined){
                 error_div.innerHTML = response.data.errorMsg;    

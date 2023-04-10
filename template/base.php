@@ -35,7 +35,7 @@
               <em class="bi bi-bell-fill"></em>
               <span class="badge badge-secondary" id="nNotifiche"><?php echo $templateParams["notifiche"] ?></span>
             </button>
-              <ul id="elenco-notifiche" class="dropdown-menu" style="width: 300px;">
+              <ul id="elenco-notifiche overflow-auto" class="dropdown-menu" style="width: 300px;">
                 <?php if(empty($templateParams["notificheDescr"])): ?>
                   <li>non ci sono notifiche aperte</li>
                 <?php else: ?>

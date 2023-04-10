@@ -13,7 +13,7 @@ function generaPost(post){
                                         height="60" />
                                         <div>
                                             <input type="hidden" id="getPostid${post[i]["idpost"]}" value="${post[i]["autore"]}">
-                                            <h6 class="fw-bold text-primary mb-1">${post[i]["nickname"]}</h6>
+                                            <h6 class="fw-bold text-primary mb-1"><a href="profilo.php?user=${post[i]["autore"]}" class="text-decoration-none">${post[i]["nickname"]}</a></h6>
                                             <p class="text-muted small mb-0">
                                             Pubblicato il ${post[i]["datapost"]}
                                             </p>
@@ -105,7 +105,7 @@ function mostraCommenti(id) {
           let thisUser = commenti[i]["idUser"];
                 if(commenti[i]["user"]===thisUser){
                   singolo +=`<div class="d-flex flex-row align-items-center">
-                              <p class="small text-muted mb-0">remove?</p>
+                              <p class="small text-muted mb-0">cancella?</p>
                               <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
                               <a onclick="deleteCommenti(${commenti[i]["idCommento"]},${commenti[i]["idPost"]})" style="color: #aaa;" class="link-muted"><i class="bi bi-trash3"></i></a>
                             </div>`;
@@ -122,7 +122,6 @@ function mostraCommenti(id) {
 
 function inserisciCommento(idpost, autore) {
     const comment = document.querySelector('#textArea'+idpost);
-    console.log(autore);
     if(comment.value !== ""){
         //chiudo il blocco dei commenti in modo di ricaricarlo alla successiva visualizzazione
         let commentiDiv = document.getElementById("commenti"+idpost);
@@ -133,7 +132,6 @@ function inserisciCommento(idpost, autore) {
         formData.append('autore', autore);
         axios.post('api-commenti.php', formData)
         .then(response => {
-            console.log(response);
             comment.value = "";
             mostraCommenti(idpost)
         });
@@ -162,19 +160,16 @@ function updateLike(idpost, autore){
 }
 
 function inserisciPost(){
-let formData = new FormData();
-
+    let formData = new FormData();
     formData.append('titolo', document.getElementById('titolopost').value);
     formData.append('testo', document.getElementById('testopost').value);
     formData.append('immaginePost', document.getElementById('imgpost').files[0]);
-
     axios.post('api-gestisciPost.php', formData).then(response => {
-        console.log(response);
         if(response.data["inserito"]) {
             window.location.replace('homepage.php');
         } else {
-            document.querySelector("form > p").innerText = "Errore in inserimento post";
-        }
-    });
+        document.querySelector("form > p").innerText = "Errore in inserimento post";
+    }
+});
 }
 

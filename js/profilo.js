@@ -55,7 +55,6 @@ function updateFollowed(seguito){
   formData.append('user', user);
   formData.append('value', seguito);
   axios.post('api-follower.php', formData).then(response => {
-    console.log(response);
     if(response.data["inserito"]){
       document.getElementById("numeroFollower").textContent = response.data["numFollower"];
       document.getElementById("bottoneSegui").outerHTML = generaFollowButton(seguito);
