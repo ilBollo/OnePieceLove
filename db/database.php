@@ -79,7 +79,7 @@ class DatabaseHelper{
      * trova solo i post di uno specifico profilo
      */
     public function getPostsProfilo(int $iduser){
-        $query = "SELECT idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio FROM post, account WHERE post.iduser=account.iduser and post.iduser =? ORDER BY datapost DESC";
+        $query = "SELECT post.iduser as autore, idpost, titolo, immaginepost, datapost, testo, nickname, idpersonaggio FROM post, account WHERE post.iduser=account.iduser and post.iduser =? ORDER BY datapost DESC";
    
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i',$iduser);
@@ -245,7 +245,7 @@ class DatabaseHelper{
     }
 
     function insertFollowed(int $followed, int $io){
-        $query = "INSERT INTO amicizia (followed, follower, notificaAperta) VALUES (?, ?, -1)";
+        $query = "INSERT INTO amicizia (followed, follower) VALUES (?, ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('ii', $followed, $io);
         $result=$stmt->execute();

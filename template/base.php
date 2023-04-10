@@ -56,8 +56,8 @@
                   <li>non ci sono notifiche aperte</li>
                 <?php else: ?>
                   <?php foreach($templateParams["notificheDescr"] as $notificaDescr): ?>
-                    <li id="notif<?php echo $notificaDescr["idNotifica"]; ?>">
-                      <?php echo $notificaDescr["nickname"]. ' '.$notificaDescr["testo"];?> 
+                    <li id="notif<?php echo $notificaDescr["idNotifica"]; ?>" class="d-flex align-items-center">
+                      <?php echo '<b>'.$notificaDescr["nickname"].' </b> '.$notificaDescr["testo"];?> 
                       <div class="text-end">
                       <button type="button" class="btn btn-danger" onclick="closeNotifica('<?php echo $notificaDescr["idNotifica"]; ?>')">X</button>
                       </div>
