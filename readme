@@ -1,4 +1,8 @@
-social per fans di OnePiece
+social per appssionati di OnePiece ad uso puramente accademico, tutti i diritti sono riservati agli autori.
+Per iniziare
+1) Lanciare le query presenti in db/creazioen_db.sql
+2) Andare in boostrap.php e settare i propri parametri di accesso al database mysql
+
 per fare delle prove è possibile utilizzare gli account già creati 
 simone.bollini@studio.unibo.it pw->Progetto88
 giulia.ceccoli@prova.it pw->Prova1
